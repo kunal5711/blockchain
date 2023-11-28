@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="shortcut icon" href="images/index2.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Open+Sans:wght@400;700&display=swap"
+        rel="stylesheet">
+    <title>Blockchain</title>
+    <style>
+        .form-container {
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.9);
+            width: 90%;
+            max-width: 400px;
+            margin: auto;
+            position: relative;
+            top: 86px;
+            border-radius: 12px;
+            background-color: white;
+            padding: 20px;
+        }
+
+        .heading {
+            font-size: 1.5em;
+            text-align: center;
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            line-height: 34px;
+        }
+
+        button {
+            color: #fff;
+            background-color: #20bc7e;
+            padding: 10px 0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        label {
+            font-weight: 600;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        header {
+            height: 100px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        ul {
+            margin: auto auto auto 50vw;
+            display: flex;
+            list-style-type: none;
+            align-items: center;
+        }
+
+        ul li a {
+            padding: 0px 20px;
+            text-decoration: none;
+            color: #3a3a3a;
+            display: inline-block;
+        }
+
+        li a::after {
+            content: '';
+            display: block;
+            height: 4px;
+            width: 0;
+            background: #7171d3;
+            transition: all .5s
+        }
+
+        li a:hover::after {
+            width: 100%;
+        }
+
+        .signup-btn {
+            padding: 10px 20px;
+            background: #7171d3;
+            color: #fff;
+            outline: none;
+            border: none;
+            font-weight: 700;
+            text-transform: uppercase;
+            border-radius: 50px;
+        }
+    </style>
+</head>
+
+<body
+    style=" font-size: 100%; background-color: #f0f4f5; background-image: url(images/blockchain.png); background-size: cover; z-index: -2;">
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index2.html">Home</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="id.html" class="signup-btn">Unique</a></li>
+            </ul>
+        </nav>
+    </header>
+    <form class="form-container">
+        <h2 class="heading">Blockchain</h2>
+        <div class="content">
+            <label for="nameInput">Name</label>
+            <input type="text" placeholder="Enter your name" id="nameInput">
+
+            <label for="ageInput">Age</label>
+            <input type="number" placeholder="Enter your age" id="ageInput">
+
+            <label for="companyInput">Company</label>
+            <input type="text" placeholder="Enter your Company's Name" id="companyInput">
+
+            <label for="locationInput">Location</label>
+            <input type="text" placeholder="Enter location" id="locationInput">
+
+            <button class="btn" onclick="addToBlockchain()">Add to Blockchain</button>
+
+            <p id="result"></p>
+        </div>
+    </form>
+
+    <script>
+        // Simulated blockchain data (in a real scenario, this would be maintained on a decentralized network)
+        let blockchain = [];
+        async function addToBlockchain(event) {
+            event.preventDefault(); // Prevent form submission and page refresh
+
+            const name = document.getElementById("nameInput").value;
+            const age = document.getElementById("ageInput").value;
+            const company = document.getElementById("companyInput").value;
+            const location = document.getElementById("locationInput").value;
+
+            const inputData = `${name}, ${age}, ${company}, ${location}`;
+            const hash = await sha256(inputData);
+
+            const block = {
+                data: inputData,
+                hash: hash
+            };
+            blockchain.push(block);
+
+            document.getElementById("result").innerText = `Data added to blockchain.\nBlock Hash: ${hash}`;
+        }
+        async function sha256(input) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(input);
+            const buffer = await crypto.subtle.digest('SHA-256', data);
+            const hashArray = Array.from(new Uint8Array(buffer));
+            return hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
+        }
+    </script>
+</body>
+
+</html>
